@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import CTAButton from "./CTAButton";
+import ComingSoonModal, { useComingSoonModal } from "./ComingSoonModal";
 
 function GoogleIcon() {
   return (
@@ -38,7 +39,7 @@ export default function LeadForm() {
   const [wantsTips, setWantsTips] = useState(true);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [showGmailNotice, setShowGmailNotice] = useState(false);
+  const { isOpen, open, close } = useComingSoonModal();
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
@@ -66,17 +67,8 @@ export default function LeadForm() {
 
   function handleGmailRegister(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    setShowGmailNotice(true);
+    open();
   }
-
-  useEffect(() => {
-    if (!showGmailNotice) return;
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setShowGmailNotice(false);
-    }
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [showGmailNotice]);
 
   if (submitted) {
     return (
@@ -173,31 +165,11 @@ export default function LeadForm() {
         </button>
       </div>
     </form>
-    {showGmailNotice && (
-      <div
-        className="lead-form-notice"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="lead-form-notice-title"
-        onClick={() => setShowGmailNotice(false)}
-      >
-        <div
-          className="lead-form-notice__panel"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <p id="lead-form-notice-title" className="lead-form-notice__message">
-            To be implemented soon.
-          </p>
-          <button
-            type="button"
-            className="lead-form-notice__close"
-            onClick={() => setShowGmailNotice(false)}
-          >
-            OK
-          </button>
-        </div>
-      </div>
-    )}
+    <ComingSoonModal
+      open={isOpen}
+      onClose={close}
+      titleId="lead-form-notice-title"
+    />
     </>
   );
 }

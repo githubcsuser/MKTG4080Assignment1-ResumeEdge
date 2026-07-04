@@ -3,6 +3,7 @@
 import { useScrollToSection } from "@/components/canvas/ScrollContext";
 import { FOOTER_EXPLORE_COLUMNS, FOOTER_NAV_ITEMS } from "@/lib/cards";
 import Logo from "@/components/brand/Logo";
+import ComingSoonModal, { useComingSoonModal } from "@/components/ui/ComingSoonModal";
 
 function LinkedInIcon() {
   return (
@@ -29,21 +30,17 @@ function InstagramIcon() {
 }
 
 const SOCIAL_LINKS = [
-  { label: "LinkedIn", href: "#", Icon: LinkedInIcon },
-  { label: "X (Twitter)", href: "#", Icon: XIcon },
-  { label: "Instagram", href: "#", Icon: InstagramIcon },
+  { label: "LinkedIn", Icon: LinkedInIcon },
+  { label: "X (Twitter)", Icon: XIcon },
+  { label: "Instagram", Icon: InstagramIcon },
 ] as const;
 
-const COMPANY_LINKS = [
-  { label: "About", href: "/about" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Help Center", href: "/help" },
-] as const;
+const COMPANY_LINKS = ["About", "FAQ", "Help Center"] as const;
 
 const LEGAL_LINKS = [
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Service", href: "/terms" },
-  { label: "Cookie Policy", href: "/cookies" },
+  "Privacy Policy",
+  "Terms of Service",
+  "Cookie Policy",
 ] as const;
 
 function FooterNavLink({
@@ -69,15 +66,18 @@ function FooterNavLink({
 
 function FooterPlaceholderLink({
   label,
-  href,
+  onComingSoon,
 }: {
   label: string;
-  href: string;
+  onComingSoon: () => void;
 }) {
   return (
     <a
-      href={href}
-      onClick={(e) => e.preventDefault()}
+      href="#"
+      onClick={(e) => {
+        e.preventDefault();
+        onComingSoon();
+      }}
       className="footer-link"
     >
       {label}
@@ -87,6 +87,7 @@ function FooterPlaceholderLink({
 
 export default function CardFiveDestination() {
   const scrollToSection = useScrollToSection();
+  const { isOpen, open, close } = useComingSoonModal();
 
   return (
     <footer>
@@ -117,9 +118,9 @@ export default function CardFiveDestination() {
         <div className="footer-company-col">
           <p className="footer-col-heading">Company</p>
           <ul className="footer-link-list">
-            {COMPANY_LINKS.map((link) => (
-              <li key={link.label}>
-                <FooterPlaceholderLink label={link.label} href={link.href} />
+            {COMPANY_LINKS.map((label) => (
+              <li key={label}>
+                <FooterPlaceholderLink label={label} onComingSoon={open} />
               </li>
             ))}
           </ul>
@@ -128,9 +129,9 @@ export default function CardFiveDestination() {
         <div className="footer-legal-col">
           <p className="footer-col-heading">Legal</p>
           <ul className="footer-link-list">
-            {LEGAL_LINKS.map((link) => (
-              <li key={link.label}>
-                <FooterPlaceholderLink label={link.label} href={link.href} />
+            {LEGAL_LINKS.map((label) => (
+              <li key={label}>
+                <FooterPlaceholderLink label={label} onComingSoon={open} />
               </li>
             ))}
           </ul>
@@ -151,16 +152,16 @@ export default function CardFiveDestination() {
               San Francisco, CA
             </p>
             <div className="footer-social-row">
-              {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-                <a
+              {SOCIAL_LINKS.map(({ label, Icon }) => (
+                <button
                   key={label}
-                  href={href}
-                  onClick={(e) => e.preventDefault()}
+                  type="button"
+                  onClick={open}
                   aria-label={label}
                   className="social-icon-link"
                 >
                   <Icon />
-                </a>
+                </button>
               ))}
             </div>
           </div>
@@ -178,6 +179,12 @@ export default function CardFiveDestination() {
           references are fictional and should not be taken as fact.
         </p>
       </div>
+
+      <ComingSoonModal
+        open={isOpen}
+        onClose={close}
+        titleId="footer-coming-soon-title"
+      />
     </footer>
   );
 }

@@ -161,7 +161,7 @@ Four outcome-focused items with green checkmarks. Titles: short benefit headline
 - **Job market tips** checkbox — **checked by default**, optional
 - **Terms and conditions** checkbox — **required** to submit ("I agree to the terms and conditions")
 - Primary submit: orange **"Register to start"** (`CTAButton`)
-- Secondary **"Register by Gmail"** — outline button below submit with Google icon; UI-only demo (no OAuth). Click opens in-app notice modal: *To be implemented soon.*
+- Secondary **"Register by Gmail"** — outline button below submit with Google icon; UI-only demo (no OAuth). Click opens shared `ComingSoonModal` (*To be implemented soon.*).
 - Labels use `.form-field` with **4px gap** above inputs (`globals.css`)
 - **Success state** (after submit): heading **"You're all set!"**; body thanks for signing up, states product is in beta, promises contact at launch — **no ATS score or delivery claims**. Copy: *Thanks for signing up. ResumeEdge is still in beta. ResumeEdge will contact you at launch.*
 
@@ -169,9 +169,10 @@ Four outcome-focused items with green checkmarks. Titles: short benefit headline
 - **Layout**: 5 columns desktop — Brand | Explore | Company | Legal | Contact (Company and Legal are sibling columns, top-aligned headings — not stacked in one cell); tablet 2-col (brand full-width, then pairs); mobile single stack. Grid spans full container width on lg+ with `repeat(5, max-content)` + `justify-content: space-between` so inter-column spacing is equal between headings (free width goes into gaps, not empty space inside `1fr` tracks — avoids Company↔Legal looking twice as wide as Brand↔Explore). Brand content capped ~280px; Contact content capped ~260px. Explore uses `.footer-explore-cols` (two independent flex lists, 4+3 split). Minimum `column-gap` via `clamp(1.25rem, 0.5rem + 1.5vw, 2rem)`; explore inner gap uses `clamp(1rem, 0.5rem + 1vw, 1.5rem)`. Grid has subtle bottom divider; meta row (copyright only) above disclaimer bar.
 - **Brand column**: Logo, tagline (*Upload a job description. See what to fix and get a tailored resume in under 2 minutes.* — no 24h), green trust line (*Built for recent grads.*). No newsletter signup in footer (registration lives in `#lead-form`).
 - **Explore**: two independent flex columns via `FOOTER_EXPLORE_COLUMNS` (4+3 split of `FOOTER_NAV_ITEMS`, mirrors nav order column-first; no Try Free). Desktop side-by-side at lg+; mobile stacks both lists. Avoids single-list CSS grid row coupling (tall left-col label no longer stretches gap before right-col links).
-- **Company** (`.footer-company-col`): About, FAQ, Help Center (placeholder `/about`, `/faq`, `/help`).
-- **Legal** (`.footer-legal-col`): Privacy Policy, Terms of Service, Cookie Policy (placeholder `/privacy`, `/terms`, `/cookies`).
-- **Contact**: bordered block — intro line, email, location, social SVG icons (LinkedIn, X, Instagram).
+- **Company** (`.footer-company-col`): About, FAQ, Help Center — `href="#"` placeholders; open shared `ComingSoonModal`.
+- **Legal** (`.footer-legal-col`): Privacy Policy, Terms of Service, Cookie Policy — `href="#"` placeholders; open shared `ComingSoonModal`.
+- **Contact**: bordered block — intro line, email, location, social SVG icons (LinkedIn, X, Instagram) as `button type="button"`; each opens shared `ComingSoonModal`.
+- **Explore** nav links (Home, Why Us, etc.) keep real scroll routes — no modal.
 - **Meta row**: copyright only; legal links live in the Legal column (single source, no duplicate meta nav).
 - **Disclaimer**: full-width strip at very bottom (unchanged).
 - Keep footer **compact**; no CTA or signup form in footer (lead capture is `#lead-form` only).
@@ -198,6 +199,7 @@ Four outcome-focused items with green checkmarks. Titles: short benefit headline
 
 ## Technical Notes
 
+- **ComingSoonModal** (`components/ui/ComingSoonModal.tsx`): reusable dialog — message *To be implemented soon.*, `role="dialog"`, `aria-modal`, dismiss via OK, backdrop click, or Escape. Hook: `useComingSoonModal()` → `{ isOpen, open, close }`. Used by `LeadForm` (Gmail register) and `CardFiveDestination` (Company, Legal, social icons).
 - **Stack**: Next.js 15, React 19, Tailwind CSS 4, TypeScript
 - **Routing**: Path anchors `/cardone`–`/cardfive` via `app/[[...section]]/page.tsx`
 - **Card mapping**: cardone=Hero, cardtwo=Problem/HowItWorks/BeforeAfter/Benefits, cardfour=Pricing, cardthree=Reviews+Trust, lead-form=Sign Up (after cardthree), cardfive=CTA+Footer
