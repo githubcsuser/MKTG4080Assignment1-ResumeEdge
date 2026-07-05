@@ -2,6 +2,7 @@ const TIERS = [
   {
     name: "Free Scan",
     price: "$0",
+    priceSuffix: "/month",
     popular: false,
     features: [
       "How well your resume matches one job",
@@ -13,6 +14,7 @@ const TIERS = [
   {
     name: "Resume Rewrite",
     price: "$19",
+    priceSuffix: "/month",
     popular: true,
     features: [
       "Everything in Free Scan",
@@ -22,8 +24,9 @@ const TIERS = [
     ],
   },
   {
-    name: "Job Hunt Pack",
+    name: "Career Bundle",
     price: "$39",
+    priceSuffix: "/month",
     popular: false,
     features: [
       "Everything in Resume Rewrite",
@@ -51,8 +54,11 @@ export default function PricingCircles() {
               </span>
             )}
             <p className="font-bold text-xl text-black">{tier.name}</p>
-            <p className="font-bold my-3 text-4xl text-green">
-              {tier.price}
+            <p className="pricing-price my-3">
+              <span className="pricing-price-amount">{tier.price}</span>
+              {tier.priceSuffix && (
+                <span className="pricing-price-suffix">{tier.priceSuffix}</span>
+              )}
             </p>
             {tier.popular && (
               <p className="text-lg text-[#4a4a5e] mb-2">Best for active job seekers</p>

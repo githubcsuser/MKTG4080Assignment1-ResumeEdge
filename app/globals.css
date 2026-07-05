@@ -1594,6 +1594,27 @@ input:focus-visible {
   border-radius: 16px;
 }
 
+/* Pricing display — amount + optional /month suffix or free note */
+.pricing-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem;
+  line-height: 1.1;
+}
+
+.pricing-price-amount {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.pricing-price-suffix {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #4a4a5e;
+}
+
 /* Pricing cards — shared base; only featured tier gets accent treatment */
 .pricing-card {
   display: flex;

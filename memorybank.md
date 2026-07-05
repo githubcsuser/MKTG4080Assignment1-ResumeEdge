@@ -24,7 +24,7 @@ Project feedback history and design decisions. Reference this before making layo
 3. **How It Works** — horizontal 3-step row: Upload (job description + resume) → AI Analysis (under 2 min) → Download tailored resume with rewritten bullets + PDF (under 2 min) (`section-how-it-works`)
 4. **Before & After** — side-by-side weak vs strong bullets, red/green tint (`section-before-after`)
 5. **Benefits** — 4 outcome-focused items with green checkmarks (`section-benefits`)
-6. **Pricing** — Free Scan / Resume Rewrite $19 / Job Hunt Pack $39 (`cardfour`)
+6. **Pricing** — Free Scan $0/month (free forever) / Resume Rewrite $19/month / Career Bundle $39/month (`cardfour`)
 7. **Testimonials** — horizontal carousel, auto-scroll, pause + zoom on hover (`cardthree`)
 8. **Trust badges** — "As seen in" + real career-media wordmarks (Forbes, Business Insider, The Muse, Glassdoor, LinkedIn), static row (`PressLogos` in `cardthree`)
 9. **Lead form** — conversion zone with "Try It Free" form (`#lead-form`, after `cardthree`)
@@ -95,11 +95,19 @@ Social proof (testimonials + press) sits after pricing and before the lead form.
 
 Plain English for anxious recent grads. Short, sharp, no buzzwords, no em-dashes. Avoid jargon: no "ATS score", "keyword match", "keyword gaps", "optimization", "per posting", or "priority support" in tier bullets or hero stats.
 
+**Price display:** All tiers show the dollar amount in large green type with a smaller `/month` suffix (e.g. `$0` + `/month`, `$19` + `/month`).
+
+| Tier | Price copy |
+|------|------------|
+| **Free Scan** | `$0` + `/month` |
+| **Resume Rewrite** | `$19` + `/month` |
+| **Career Bundle** | `$39` + `/month` |
+
 | Tier | Bullets |
 |------|---------|
 | **Free Scan** | How well your resume matches one job · Results in under 2 minutes · Missing words recruiters look for · 3 ways to improve your bullet points |
 | **Resume Rewrite** | Everything in Free Scan · Full resume rewrite for each job you upload · Rewritten bullets ready in under 2 minutes · Download a ready-to-send PDF |
-| **Job Hunt Pack** | Everything in Resume Rewrite · Cover letter written for that job · Better LinkedIn headline · Get help faster |
+| **Career Bundle** | Everything in Resume Rewrite · Cover letter written for that job · Better LinkedIn headline · Get help faster |
 
 ### Problem section pain points (`PAIN_POINTS` in `CardThreeDiscovery`)
 
