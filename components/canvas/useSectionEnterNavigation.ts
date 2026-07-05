@@ -5,13 +5,14 @@ import { SECTION_ENTER_ORDER } from "@/lib/cards";
 import { useScrollToSection } from "./ScrollContext";
 import { layout } from "@/lib/tokens";
 
-function isFormFieldFocused(): boolean {
+function shouldSkipEnterNavigation(): boolean {
   const el = document.activeElement;
   if (!el || !(el instanceof HTMLElement)) return false;
 
   const tag = el.tagName;
   if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
   if (el.isContentEditable) return true;
+  if (el.classList.contains("section-enter-hint")) return true;
 
   return false;
 }
@@ -33,6 +34,16 @@ function getCurrentSectionIndex(): number {
   return currentIndex;
 }
 
+export function navigateToNextSection(
+  scrollToSection: (slug: string, smooth?: boolean) => void
+): void {
+  const currentIndex = getCurrentSectionIndex();
+  const isLast = currentIndex >= SECTION_ENTER_ORDER.length - 1;
+  const nextTarget = isLast ? "cardone" : SECTION_ENTER_ORDER[currentIndex + 1];
+
+  scrollToSection(nextTarget);
+}
+
 export function useSectionEnterNavigation() {
   const scrollToSection = useScrollToSection();
 
@@ -40,14 +51,10 @@ export function useSectionEnterNavigation() {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Enter") return;
       if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
-      if (isFormFieldFocused()) return;
-
-      const currentIndex = getCurrentSectionIndex();
-      const isLast = currentIndex >= SECTION_ENTER_ORDER.length - 1;
-      const nextTarget = isLast ? "cardone" : SECTION_ENTER_ORDER[currentIndex + 1];
+      if (shouldSkipEnterNavigation()) return;
 
       e.preventDefault();
-      scrollToSection(nextTarget);
+      navigateToNextSection(scrollToSection);
     };
 
     window.addEventListener("keydown", onKeyDown);

@@ -3046,11 +3046,16 @@ input:focus-visible {
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
+  padding: 0.75rem 1rem;
+  min-height: 44px;
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  pointer-events: none;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
   user-select: none;
   z-index: 2;
   display: inline-flex;
@@ -3061,6 +3066,17 @@ input:focus-visible {
   max-width: calc(100% - 2rem);
   text-align: center;
   animation: section-enter-hint-blink 2.5s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.section-enter-hint:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.section-enter-hint:active {
+  opacity: 0.85;
 }
 
 .section-enter-hint--dark {
@@ -3195,4 +3211,43 @@ input:focus-visible {
   .section-block--before-after .before-after-showcase {
     gap: 16px 24px;
   }
+}
+
+/* Mobile nav: horizontal scroll when links exceed logo + viewport width */
+@media (max-width: 767px) {
+  .site-header .section-container {
+    gap: 0.5rem;
+  }
+
+  .site-header .section-container > a:first-of-type {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    padding-right: 0.25rem;
+    background-color: rgba(6, 26, 46, 0.95);
+  }
+
+  .site-header .nav-list-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .site-header .nav-list-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-header .nav-list {
+    overflow: visible;
+    justify-content: flex-end;
+  }
+}
+
+/* Pricing (#cardfour) — slightly more gap between Try It Free CTA and enter hint */
+.section-block--pricing .section-bottom-cta {
+  margin-bottom: 0.75rem;
 }

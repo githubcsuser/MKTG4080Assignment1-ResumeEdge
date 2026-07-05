@@ -36,49 +36,51 @@ export default function TopNav() {
             <Logo size="sm" />
           </a>
 
-          <ul className="nav-list flex items-center justify-end gap-0.5 md:gap-1 h-full m-0 p-0 list-none min-w-0 flex-1">
-            {navLinks.map((item) => {
-              const isActive = activeSection === item.target;
-              return (
-                <li key={item.label} className="nav-item shrink-0">
+          <div className="nav-list-scroll flex flex-1 min-w-0 h-full justify-end">
+            <ul className="nav-list flex items-center gap-0.5 md:gap-1 h-full m-0 p-0 list-none shrink-0">
+              {navLinks.map((item) => {
+                const isActive = activeSection === item.target;
+                return (
+                  <li key={item.label} className="nav-item shrink-0">
+                    <a
+                      href={`/${item.target}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToSection(item.target);
+                        e.currentTarget.blur();
+                      }}
+                      className={`nav-link flex items-center h-11 min-h-[44px] px-2.5 md:px-3 text-slate-50 no-underline hover:text-green transition-colors whitespace-nowrap rounded-lg hover:bg-white/5${
+                        isActive ? " nav-link--active" : ""
+                      }`}
+                      aria-current={isActive ? "true" : undefined}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                );
+              })}
+              {ctaItem && (
+                <li className="nav-item shrink-0">
                   <a
-                    href={`/${item.target}`}
+                    href={`/${ctaItem.target}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      scrollToSection(item.target);
+                      scrollToSection(ctaItem.target);
                       e.currentTarget.blur();
                     }}
-                    className={`nav-link flex items-center h-11 min-h-[44px] px-2.5 md:px-3 text-slate-50 no-underline hover:text-green transition-colors whitespace-nowrap rounded-lg hover:bg-white/5${
-                      isActive ? " nav-link--active" : ""
+                    className={`nav-link nav-link--cta flex items-center h-11 min-h-[44px] no-underline whitespace-nowrap${
+                      activeSection === ctaItem.target ? " nav-link--cta-active" : ""
                     }`}
-                    aria-current={isActive ? "true" : undefined}
+                    aria-current={
+                      activeSection === ctaItem.target ? "true" : undefined
+                    }
                   >
-                    {item.label}
+                    {ctaItem.label}
                   </a>
                 </li>
-              );
-            })}
-            {ctaItem && (
-              <li className="nav-item shrink-0">
-                <a
-                  href={`/${ctaItem.target}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(ctaItem.target);
-                    e.currentTarget.blur();
-                  }}
-                  className={`nav-link nav-link--cta flex items-center h-11 min-h-[44px] no-underline whitespace-nowrap${
-                    activeSection === ctaItem.target ? " nav-link--cta-active" : ""
-                  }`}
-                  aria-current={
-                    activeSection === ctaItem.target ? "true" : undefined
-                  }
-                >
-                  {ctaItem.label}
-                </a>
-              </li>
-            )}
-          </ul>
+              )}
+            </ul>
+          </div>
         </div>
       </nav>
     </header>
