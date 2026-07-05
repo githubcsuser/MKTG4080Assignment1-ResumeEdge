@@ -1,6 +1,7 @@
 import FeatureGrid from "@/components/ui/FeatureGrid";
 import BeforeAfterShowcase from "@/components/ui/BeforeAfterShowcase";
 import SectionBottomCta from "@/components/ui/SectionBottomCta";
+import SectionEnterHint from "@/components/ui/SectionEnterHint";
 import DecorativeBlob, { ProblemIllustration } from "@/components/illustrations/DecorativeBlob";
 import { StepIllustration } from "@/components/illustrations/StepIllustrations";
 
@@ -67,6 +68,7 @@ export default function CardThreeDiscovery() {
 
           <SectionBottomCta />
         </div>
+        <SectionEnterHint />
       </div>
 
       <div
@@ -99,6 +101,7 @@ export default function CardThreeDiscovery() {
 
           <SectionBottomCta />
         </div>
+        <SectionEnterHint />
       </div>
 
       <div
@@ -117,6 +120,7 @@ export default function CardThreeDiscovery() {
 
           <SectionBottomCta />
         </div>
+        <SectionEnterHint />
       </div>
 
       <div
@@ -134,6 +138,7 @@ export default function CardThreeDiscovery() {
           <FeatureGrid />
           <SectionBottomCta />
         </div>
+        <SectionEnterHint />
       </div>
     </>
   );

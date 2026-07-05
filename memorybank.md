@@ -53,7 +53,7 @@ Social proof (testimonials + press) sits after pricing and before the lead form.
 - **No floating card frames** on a navy canvas; use full-width section backgrounds
 - **Unified container**: all sections use `.section-container` — stepped `--container-max` via CSS variable (`72rem` default → `80rem` at 1280px → `88rem` at 1536px → `96rem` at 1920px+), `px-6 lg:px-8` (2.5rem at 1536px+); nav bar uses same container
 - **Large-screen responsive scaling (xl+)**: On wide viewports (1280px / 1536px / 1920px+), content scales up proportionally — do not leave tiny elements in empty margins. Increase `--container-max`, typography caps (`clamp()` on hero headline + section titles), hero grid gap + mockup scale, problem card padding, before/after showcase + resume mockups, pricing card padding/gap, conversion zone, footer grid gap. Preserve viewport vertical centering, Benefits→Pricing flush (no peek), mobile stack, and compact footer height.
-- **Vertical centering (viewport sections)**: outer `.viewport-section` fills `min-height: calc(100svh - var(--header-offset))` on tablet/desktop; `.section-container` is a flex column with `justify-content: center` so **heading + main content + `.section-bottom-cta` center as one group**. Do not pin the CTA with `mt-auto` on the outer section. Mobile (`max-width: 767px`): `min-height: auto`, container `justify-content: flex-start`. **Pricing** (`viewport-section--pricing`): `min-height: auto`, flush after Benefits — no pricing peek. **Form**: keeps viewport min-height with centered conversion zone. Symmetric section-block padding (48px / 64px lg); no asymmetric compare padding.
+- **Vertical centering (viewport sections)**: outer `.viewport-section` fills `min-height: calc(100svh - var(--header-offset))` on tablet/desktop; `.section-container` is a flex column with `justify-content: center` so **heading + main content + `.section-bottom-cta` center as one group**. Do not pin the CTA with `mt-auto` on the outer section. Mobile (`max-width: 767px`): `min-height: auto`, container `justify-content: flex-start`. **Pricing** (`viewport-section--pricing`): `min-height: auto`, flush after Benefits — no pricing peek. **Form**: keeps viewport min-height with centered conversion zone. Symmetric section-block padding (48px / 64px lg). **Compare** (`section-block--before-after`): scoped tighter vertical gaps only (header `margin-bottom`, showcase/column `gap`, bottom-CTA `padding-top`) — resume mockup/card/button sizes unchanged; frees space so Enter hint sits higher above viewport bottom.
 - **Alignment**: hero split layout (left copy, right visual); all other sections left-align headings, leads, and grids to container left edge; press logos remain centered
 - **Typography scale**: section titles clamp to 56px desktop (was 48px); hero headline clamp to 72px (was 64px); leads 20–22px; body scales 18→20px at xl+
 - **How it works**: clean horizontal step row — no cramped side-by-side demo panel
@@ -147,8 +147,11 @@ Four outcome-focused items with green checkmarks. Titles: short benefit headline
 ### Navigation
 - **8 items**: Home, Why Us, How It Works, Compare, Benefits, Pricing, Testimonials, Try Free
 - **Why Us** → `#section-problem` (Problem section; heading unchanged)
+- **Compare** → `#section-before-after`
 - **No Demo** in nav or footer
 - **Labels**: product-style menu (not assignment section names); footer Explore links mirror nav via `FOOTER_NAV_ITEMS`
+- **Active section highlight**: `useCardScroll` tracks `activeSection` via passive scroll listener (`computeActiveSection` — last `NAV_ITEMS` target whose top ≤ scrollY + headerOffset; 100ms debounce + rAF). `TopNav` applies `.nav-link--active` (green + underline), `.nav-link--cta-active` (inset ring), `.nav-logo--active` on Home. Blur nav links after click to avoid lingering focus ring.
+- **Enter key section navigation**: Press **Enter** (not Tab; skipped in form fields) to scroll to next `SECTION_ENTER_ORDER` target. Last section (`#lead-form`) → hero (`cardone`). `SectionEnterHint` at bottom of each navigable viewport section (blinking Enter keycap).
 
 ### Review carousel (`ReviewCarousel`)
 - Infinite auto-scroll right to left; pause + zoom on hover
@@ -211,6 +214,8 @@ Four outcome-focused items with green checkmarks. Titles: short benefit headline
 - **Stack**: Next.js 15, React 19, Tailwind CSS 4, TypeScript
 - **Routing**: Path anchors `/cardone`–`/cardfive` via `app/[[...section]]/page.tsx`
 - **Card mapping**: cardone=Hero, cardtwo=Problem/HowItWorks/BeforeAfter/Benefits, cardfour=Pricing, cardthree=Reviews+Trust, lead-form=Sign Up (after cardthree), cardfive=CTA+Footer
+- **Scroll spy**: Use passive scroll position (not IntersectionObserver with `-50%` rootMargin) for nav highlight — IO flickers on tall sections. URL sync keeps existing card-level IntersectionObserver unchanged.
+- **CSS additions only**: Enter-hint and nav-active classes appended at end of `globals.css` — never edit existing responsive/layout rules (compare, carousel, hero-grid, overflow).
 - **Review images**: Local WebP in `public/avatars/`; Unsplash IDs in `scripts/generate_avatars.py`
 - **Dev HMR**: `npm run dev` → `next dev --turbo`
 

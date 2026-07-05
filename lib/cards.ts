@@ -70,6 +70,12 @@ export const FOOTER_NAV_ITEMS = NAV_ITEMS.filter(
   (item) => !("isCta" in item && item.isCta)
 );
 
+/** Keyboard Enter navigation order — mirrors NAV_ITEMS targets (excludes footer). */
+export const SECTION_ENTER_ORDER = NAV_ITEMS.map((item) => item.target);
+
+export const LAST_SECTION_ENTER_TARGET =
+  SECTION_ENTER_ORDER[SECTION_ENTER_ORDER.length - 1];
+
 /** Explore footer links split into two columns (nav order, column-first). */
 export const FOOTER_EXPLORE_COLUMNS = [
   FOOTER_NAV_ITEMS.slice(0, 4),

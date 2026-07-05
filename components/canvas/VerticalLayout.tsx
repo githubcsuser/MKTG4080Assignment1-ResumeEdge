@@ -9,7 +9,9 @@ import CardFourInteraction, {
   LeadFormSection,
 } from "@/components/cards/CardFourInteraction";
 import CardFiveDestination from "@/components/cards/CardFiveDestination";
+import SectionEnterHint from "@/components/ui/SectionEnterHint";
 import { useCardScroll } from "./useCardScroll";
+import { useSectionEnterNavigation } from "./useSectionEnterNavigation";
 import { ScrollProvider } from "./ScrollContext";
 
 const CARD_COMPONENTS: Record<string, React.ReactNode> = {
@@ -20,11 +22,17 @@ const CARD_COMPONENTS: Record<string, React.ReactNode> = {
   cardfive: <CardFiveDestination />,
 };
 
+function SectionEnterNavigation() {
+  useSectionEnterNavigation();
+  return null;
+}
+
 export default function VerticalLayout() {
-  const { scrollToSection } = useCardScroll();
+  const { scrollToSection, activeSection } = useCardScroll();
 
   return (
-    <ScrollProvider scrollToSection={scrollToSection}>
+    <ScrollProvider scrollToSection={scrollToSection} activeSection={activeSection}>
+      <SectionEnterNavigation />
       <TopNav />
 
       <main className="page-main">
@@ -52,9 +60,16 @@ export default function VerticalLayout() {
               {card.id === "cardtwo" || card.id === "cardfour" ? (
                 CARD_COMPONENTS[card.id]
               ) : (
-                <div className="section-container">
-                  {CARD_COMPONENTS[card.id]}
-                </div>
+                <>
+                  <div className="section-container">
+                    {CARD_COMPONENTS[card.id]}
+                  </div>
+                  {card.id === "cardone" ? (
+                    <SectionEnterHint variant="dark" />
+                  ) : card.id === "cardthree" ? (
+                    <SectionEnterHint />
+                  ) : null}
+                </>
               )}
             </section>
           );

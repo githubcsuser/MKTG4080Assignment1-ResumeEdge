@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { CARDS, getCardBySlug, getCardById } from "@/lib/cards";
+import { CARDS, getCardBySlug, getCardById, NAV_ITEMS } from "@/lib/cards";
 import { layout } from "@/lib/tokens";
 
 /** Shared flag — observer ignores updates while programmatic scroll is active */
@@ -13,10 +13,30 @@ function getSectionTop(el: HTMLElement): number {
   return top - layout.headerOffset;
 }
 
+/** Last nav target whose top has crossed the header anchor — same logic as Enter nav */
+function computeActiveSection(): (typeof NAV_ITEMS)[number]["target"] {
+  const anchor = window.scrollY + layout.headerOffset + 1;
+  let active: (typeof NAV_ITEMS)[number]["target"] = NAV_ITEMS[0].target;
+
+  for (const item of NAV_ITEMS) {
+    const el = document.getElementById(item.target);
+    if (!el) continue;
+
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    if (top <= anchor) {
+      active = item.target;
+    }
+  }
+
+  return active;
+}
+
 export function useCardScroll() {
   const pathname = usePathname();
   const activeSlugRef = useRef<string>("cardone");
+  const activeSectionRef = useRef<string>("cardone");
   const initialScrollDoneRef = useRef(false);
+  const [activeSection, setActiveSection] = useState("cardone");
 
   const scrollToSection = useCallback((target: string, smooth = true) => {
     const card = getCardBySlug(target);
@@ -27,6 +47,8 @@ export function useCardScroll() {
     if (!el) return;
 
     isScrollingProgrammatically.current = true;
+    activeSectionRef.current = target;
+    setActiveSection(target);
 
     const parentCard =
       card ??
@@ -138,5 +160,46 @@ export function useCardScroll() {
     };
   }, []);
 
-  return { scrollToSection };
+  /* Passive scroll spy — nav highlight only */
+  useEffect(() => {
+    let rafId: number | null = null;
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const evaluate = () => {
+      if (isScrollingProgrammatically.current) return;
+
+      const targetId = computeActiveSection();
+      if (targetId === activeSectionRef.current) return;
+
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        if (isScrollingProgrammatically.current) return;
+
+        const next = computeActiveSection();
+        if (next === activeSectionRef.current) return;
+
+        activeSectionRef.current = next;
+        setActiveSection(next);
+      }, 100);
+    };
+
+    const onScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        evaluate();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    evaluate();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (debounceTimer) clearTimeout(debounceTimer);
+    };
+  }, []);
+
+  return { scrollToSection, activeSection };
 }
