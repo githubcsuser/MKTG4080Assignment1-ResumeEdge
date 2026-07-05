@@ -12,7 +12,6 @@ function shouldSkipEnterNavigation(): boolean {
   const tag = el.tagName;
   if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
   if (el.isContentEditable) return true;
-  if (el.classList.contains("section-enter-hint")) return true;
 
   return false;
 }

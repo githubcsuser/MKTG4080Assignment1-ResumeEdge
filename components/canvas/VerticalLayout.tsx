@@ -9,7 +9,6 @@ import CardFourInteraction, {
   LeadFormSection,
 } from "@/components/cards/CardFourInteraction";
 import CardFiveDestination from "@/components/cards/CardFiveDestination";
-import SectionEnterHint from "@/components/ui/SectionEnterHint";
 import { useCardScroll } from "./useCardScroll";
 import { useSectionEnterNavigation } from "./useSectionEnterNavigation";
 import { ScrollProvider } from "./ScrollContext";
@@ -60,16 +59,9 @@ export default function VerticalLayout() {
               {card.id === "cardtwo" || card.id === "cardfour" ? (
                 CARD_COMPONENTS[card.id]
               ) : (
-                <>
-                  <div className="section-container">
-                    {CARD_COMPONENTS[card.id]}
-                  </div>
-                  {card.id === "cardone" ? (
-                    <SectionEnterHint variant="dark" />
-                  ) : card.id === "cardthree" ? (
-                    <SectionEnterHint />
-                  ) : null}
-                </>
+                <div className="section-container">
+                  {CARD_COMPONENTS[card.id]}
+                </div>
               )}
             </section>
           );

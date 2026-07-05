@@ -1,7 +1,6 @@
 import PricingCircles from "@/components/ui/PricingCircles";
 import LeadForm from "@/components/ui/LeadForm";
 import SectionBottomCta from "@/components/ui/SectionBottomCta";
-import SectionEnterHint from "@/components/ui/SectionEnterHint";
 import DecorativeBlob from "@/components/illustrations/DecorativeBlob";
 
 export default function CardFourInteraction() {
@@ -20,7 +19,6 @@ export default function CardFourInteraction() {
           <PricingCircles />
           <SectionBottomCta />
         </div>
-        <SectionEnterHint />
       </div>
     </article>
   );
@@ -58,7 +56,6 @@ export function LeadFormSection() {
           </div>
         </div>
       </div>
-      <SectionEnterHint isLast />
     </div>
   );
 }
